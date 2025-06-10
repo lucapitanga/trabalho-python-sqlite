@@ -83,7 +83,7 @@ class LojaCRUD:
         
         return True
     
-    #def buscar_produto_por_id(self, produto_id):
+    def buscar_produto_por_id(self, produto_id):
         """Busca um produto pelo ID"""
         query = "SELECT * FROM produtos WHERE id = ?"
         resultado = self.db.executar_query(query, (produto_id,))
