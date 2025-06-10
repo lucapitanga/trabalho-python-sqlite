@@ -79,7 +79,7 @@ class ClienteCRUD:
         
         return True
     
-   # def buscar_cliente_por_id(self, cliente_id):
+    def buscar_cliente_por_id(self, cliente_id):
         """Busca um cliente pelo ID"""
         query = "SELECT * FROM clientes WHERE id = ?"
         resultado = self.db.executar_query(query, (cliente_id,))
