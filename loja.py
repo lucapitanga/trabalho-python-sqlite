@@ -24,27 +24,27 @@ class LojaCRUD:
     def adicionar_produto(self):
         """Adiciona um novo produto"""
         try:
-            print("\n📝 Cadastrar Novo Produto")
+            print("\n Cadastrar Novo Produto")
             print("-" * 30)
             
             nome = input("Nome do produto: ").strip()
             if not nome:
-                print("❌ Nome não pode estar vazio.")
+                print(" Nome não pode estar vazio.")
                 return
             
             preco = float(input("Preço: R$"))
             if preco < 0:
-                print("❌ Preço não pode ser negativo.")
+                print(" Preço não pode ser negativo.")
                 return
             
             tamanho = input("Tamanho (P, M, G, GG): ").upper().strip()
             if tamanho not in Produto.tamanhos_validos:
-                print("❌ Tamanho inválido.")
+                print(" Tamanho inválido.")
                 return
             
             estoque = int(input("Quantidade em estoque: "))
             if estoque < 0:
-                print("❌ Estoque não pode ser negativo.")
+                print(" Estoque não pode ser negativo.")
                 return
             
             query = """
@@ -54,14 +54,14 @@ class LojaCRUD:
             resultado = self.db.executar_query(query, (nome, preco, tamanho, estoque))
             
             if resultado:
-                print("✅ Produto adicionado com sucesso!")
+                print(" Produto adicionado com sucesso!")
             else:
-                print("❌ Erro ao adicionar produto.")
+                print(" Erro ao adicionar produto.")
                 
         except ValueError:
-            print("❌ Erro: valores numéricos inválidos.")
+            print(" Erro: valores numéricos inválidos.")
         except Exception as e:
-            print(f"❌ Erro inesperado: {e}")
+            print(f" Erro inesperado: {e}")
     
     def listar_produtos(self):
         """Lista todos os produtos"""
@@ -69,10 +69,10 @@ class LojaCRUD:
         produtos = self.db.executar_query(query)
         
         if not produtos:
-            print("📭 Nenhum produto cadastrado.")
+            print(" Nenhum produto cadastrado.")
             return False
         
-        print("\n📦 Lista de Produtos:")
+        print("\n Lista de Produtos:")
         print("-" * 70)
         print(f"{'ID':<3} {'Nome':<20} {'Preço':<10} {'Tamanho':<8} {'Estoque':<8}")
         print("-" * 70)
@@ -96,7 +96,7 @@ class LojaCRUD:
         """Busca produtos por nome ou email"""
         termo = input("Digite nome para buscar: ").strip()
         if not termo:
-            print("❌ Termo de busca não pode estar vazio.")
+            print(" Termo de busca não pode estar vazio.")
             return
         
         query = """
@@ -107,10 +107,10 @@ class LojaCRUD:
         produtos = self.db.executar_query(query, (f"%{termo}%",))
         
         if not produtos:
-            print("📭 Nenhum produto encontrado.")
+            print(" Nenhum produto encontrado.")
             return
         
-        print(f"\n🔍 Resultados da busca por '{termo}':")
+        print(f"\n Resultados da busca por '{termo}':")
         print("-" * 80)
         print(f"{'ID':<3} {'Nome':<25} {'Preço':<25} {'Tamanho':<15} {'Estoque':<15}")
         print("-" * 80)
@@ -129,7 +129,7 @@ class LojaCRUD:
             produto = self.buscar_produto_por_id(produto_id)
             
             if not produto:
-                print("❌ Produto não encontrado.")
+                print(" Produto não encontrado.")
                 return
             
             while True:
@@ -150,9 +150,9 @@ class LojaCRUD:
                         self.db.executar_query(query, (novo_nome, produto_id))
                         produto = dict(produto)
                         produto['nome'] = novo_nome
-                        print("✅ Nome atualizado!")
+                        print(" Nome atualizado!")
                     else:
-                        print("❌ Nome não pode estar vazio.")
+                        print(" Nome não pode estar vazio.")
                 
                 elif escolha == '2':
                     try:
@@ -162,11 +162,11 @@ class LojaCRUD:
                             self.db.executar_query(query, (novo_preco, produto_id))
                             produto = dict(produto)
                             produto['preco'] = novo_preco
-                            print("✅ Preço atualizado!")
+                            print(" Preço atualizado!")
                         else:
-                            print("❌ Preço não pode ser negativo.")
+                            print(" Preço não pode ser negativo.")
                     except ValueError:
-                        print("❌ Preço inválido.")
+                        print(" Preço inválido.")
                 
                 elif escolha == '3':
                     novo_tamanho = input("Novo tamanho (P, M, G, GG): ").upper().strip()
@@ -175,9 +175,9 @@ class LojaCRUD:
                         self.db.executar_query(query, (novo_tamanho, produto_id))
                         produto = dict(produto)
                         produto['tamanho'] = novo_tamanho
-                        print("✅ Tamanho atualizado!")
+                        print(" Tamanho atualizado!")
                     else:
-                        print("❌ Tamanho inválido.")
+                        print(" Tamanho inválido.")
                 
                 elif escolha == '4':
                     try:
@@ -187,21 +187,21 @@ class LojaCRUD:
                             self.db.executar_query(query, (novo_estoque, produto_id))
                             produto = dict(produto)
                             produto['estoque'] = novo_estoque
-                            print("✅ Estoque atualizado!")
+                            print(" Estoque atualizado!")
                         else:
-                            print("❌ Estoque não pode ser negativo.")
+                            print(" Estoque não pode ser negativo.")
                     except ValueError:
-                        print("❌ Estoque inválido.")
+                        print(" Estoque inválido.")
                 
                 elif escolha == '5':
                     break
                 else:
-                    print("❌ Opção inválida.")
+                    print(" Opção inválida.")
                     
         except ValueError:
-            print("❌ ID inválido.")
+            print(" ID inválido.")
         except Exception as e:
-            print(f"❌ Erro inesperado: {e}")
+            print(f" Erro inesperado: {e}")
     
     def excluir_produto(self):
         """Exclui um produto"""
@@ -213,7 +213,7 @@ class LojaCRUD:
             produto = self.buscar_produto_por_id(produto_id)
             
             if not produto:
-                print("❌ Produto não encontrado.")
+                print(" Produto não encontrado.")
                 return
             
             confirmacao = input(f"Confirma exclusão de '{produto['nome']}'? (s/N): ").lower()
@@ -223,22 +223,22 @@ class LojaCRUD:
                 resultado = self.db.executar_query(query, (produto_id,))
                 
                 if resultado:
-                    print(f"🗑️ Produto '{produto['nome']}' excluído com sucesso!")
+                    print(f" Produto '{produto['nome']}' excluído com sucesso!")
                 else:
-                    print("❌ Erro ao excluir produto.")
+                    print(" Erro ao excluir produto.")
             else:
-                print("❌ Exclusão cancelada.")
+                print(" Exclusão cancelada.")
                 
         except ValueError:
-            print("❌ ID inválido.")
+            print(" ID inválido.")
         except Exception as e:
-            print(f"❌ Erro inesperado: {e}")
+            print(f" Erro inesperado: {e}")
     
     def menu(self):
         """Menu principal da loja"""
         while True:
             print("\n" + "="*40)
-            print("👕 GERENCIAMENTO LOJA DE ROUPAS")
+            print(" GERENCIAMENTO LOJA DE ROUPAS")
             print("="*40)
             print("1. Adicionar produto")
             print("2. Listar produtos")
@@ -263,4 +263,4 @@ class LojaCRUD:
             elif opcao == '6':
                 break
             else:
-                print("❌ Opção inválida. Tente novamente.")
+                print(" Opção inválida. Tente novamente.")

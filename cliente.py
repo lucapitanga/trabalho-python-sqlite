@@ -22,24 +22,26 @@ class ClienteCRUD:
         self.db = db_manager
     
     def validar_email(self, email):
-        """Valida formato do email"""
-        padrao = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-        return re.match(padrao, email) is not None
-    
+        requisitos = ['@', '.']
+        for req in requisitos:
+            if req not in email:
+                return False
+        return True
+
     def adicionar_cliente(self):
         """Adiciona um novo cliente"""
         try:
-            print("\n📝 Cadastrar Novo Cliente")
+            print("\n Cadastrar Novo Cliente")
             print("-" * 30)
             
             nome = input("Nome completo: ").strip()
             if not nome:
-                print("❌ Nome não pode estar vazio.")
+                print(" Nome não pode estar vazio.")
                 return
             
             email = input("Email: ").strip().lower()
             if not self.validar_email(email):
-                print("❌ Email inválido.")
+                print(" Email inválido.")
                 return
             
             telefone = input("Telefone: ").strip()
@@ -52,12 +54,12 @@ class ClienteCRUD:
             resultado = self.db.executar_query(query, (nome, email, telefone, endereco))
             
             if resultado:
-                print("✅ Cliente adicionado com sucesso!")
+                print(" Cliente adicionado com sucesso!")
             else:
-                print("❌ Erro ao adicionar cliente. Email pode já estar cadastrado.")
+                print(" Erro ao adicionar cliente. Email pode já estar cadastrado.")
                 
         except Exception as e:
-            print(f"❌ Erro inesperado: {e}")
+            print(f" Erro inesperado: {e}")
     
     def listar_clientes(self):
         """Lista todos os clientes"""
@@ -65,10 +67,10 @@ class ClienteCRUD:
         clientes = self.db.executar_query(query)
         
         if not clientes:
-            print("📭 Nenhum cliente cadastrado.")
+            print(" Nenhum cliente cadastrado.")
             return False
         
-        print("\n👤 Lista de Clientes:")
+        print("\n Lista de Clientes:")
         print("-" * 80)
         print(f"{'ID':<3} {'Nome':<25} {'Email':<25} {'Telefone':<15} {'Endereço':<50}")
         print("-" * 80)
@@ -92,7 +94,7 @@ class ClienteCRUD:
         """Busca clientes por nome ou email"""
         termo = input("Digite nome ou email para buscar: ").strip()
         if not termo:
-            print("❌ Termo de busca não pode estar vazio.")
+            print(" Termo de busca não pode estar vazio.")
             return
         
         query = """
@@ -103,10 +105,10 @@ class ClienteCRUD:
         clientes = self.db.executar_query(query, (f"%{termo}%", f"%{termo}%"))
         
         if not clientes:
-            print("📭 Nenhum cliente encontrado.")
+            print(" Nenhum cliente encontrado.")
             return
         
-        print(f"\n🔍 Resultados da busca por '{termo}':")
+        print(f"\n Resultados da busca por '{termo}':")
         print("-" * 80)
         print(f"{'ID':<3} {'Nome':<25} {'Email':<25} {'Telefone':<15}")
         print("-" * 80)
@@ -125,7 +127,7 @@ class ClienteCRUD:
             cliente = self.buscar_cliente_por_id(cliente_id)
             
             if not cliente:
-                print("❌ Cliente não encontrado.")
+                print(" Cliente não encontrado.")
                 return
             
             while True:
@@ -146,9 +148,9 @@ class ClienteCRUD:
                         self.db.executar_query(query, (novo_nome, cliente_id))
                         cliente = dict(cliente)
                         cliente['nome'] = novo_nome
-                        print("✅ Nome atualizado!")
+                        print(" Nome atualizado!")
                     else:
-                        print("❌ Nome não pode estar vazio.")
+                        print(" Nome não pode estar vazio.")
                 
                 elif escolha == '2':
                     novo_email = input("Novo email: ").strip().lower()
@@ -158,11 +160,11 @@ class ClienteCRUD:
                         if resultado:
                             cliente = dict(cliente)
                             cliente['email'] = novo_email
-                            print("✅ Email atualizado!")
+                            print(" Email atualizado!")
                         else:
-                            print("❌ Email já está em uso.")
+                            print(" Email já está em uso.")
                     else:
-                        print("❌ Email inválido.")
+                        print(" Email inválido.")
                 
                 elif escolha == '3':
                     novo_telefone = input("Novo telefone: ").strip()
@@ -170,7 +172,7 @@ class ClienteCRUD:
                     self.db.executar_query(query, (novo_telefone, cliente_id))
                     cliente = dict(cliente)
                     cliente['telefone'] = novo_telefone
-                    print("✅ Telefone atualizado!")
+                    print(" Telefone atualizado!")
                 
                 elif escolha == '4':
                     novo_endereco = input("Novo endereço: ").strip()
@@ -178,17 +180,17 @@ class ClienteCRUD:
                     self.db.executar_query(query, (novo_endereco, cliente_id))
                     cliente = dict(cliente)
                     cliente['endereco'] = novo_endereco
-                    print("✅ Endereço atualizado!")
+                    print(" Endereço atualizado!")
                 
                 elif escolha == '5':
                     break
                 else:
-                    print("❌ Opção inválida.")
+                    print(" Opção inválida.")
                     
         except ValueError:
-            print("❌ ID inválido.")
+            print(" ID inválido.")
         except Exception as e:
-            print(f"❌ Erro inesperado: {e}")
+            print(f" Erro inesperado: {e}")
     
     def excluir_cliente(self):
         """Exclui um cliente"""
@@ -200,7 +202,7 @@ class ClienteCRUD:
             cliente = self.buscar_cliente_por_id(cliente_id)
             
             if not cliente:
-                print("❌ Cliente não encontrado.")
+                print(" Cliente não encontrado.")
                 return
             
             confirmacao = input(f"Confirma exclusão de '{cliente['nome']}'? (s/N): ").lower()
@@ -210,22 +212,22 @@ class ClienteCRUD:
                 resultado = self.db.executar_query(query, (cliente_id,))
                 
                 if resultado:
-                    print(f"🗑️ Cliente '{cliente['nome']}' excluído com sucesso!")
+                    print(f" Cliente '{cliente['nome']}' excluído com sucesso!")
                 else:
-                    print("❌ Erro ao excluir cliente.")
+                    print(" Erro ao excluir cliente.")
             else:
-                print("❌ Exclusão cancelada.")
+                print(" Exclusão cancelada.")
                 
         except ValueError:
-            print("❌ ID inválido.")
+            print(" ID inválido.")
         except Exception as e:
-            print(f"❌ Erro inesperado: {e}")
+            print(f" Erro inesperado: {e}")
     
     def menu(self):
         """Menu principal de clientes"""
         while True:
             print("\n" + "="*40)
-            print("👤 GERENCIAMENTO DE CLIENTES")
+            print(" GERENCIAMENTO DE CLIENTES")
             print("="*40)
             print("1. Adicionar cliente")
             print("2. Listar clientes")
@@ -250,4 +252,4 @@ class ClienteCRUD:
             elif opcao == '6':
                 break
             else:
-                print("❌ Opção inválida. Tente novamente.")
+                print(" Opção inválida. Tente novamente.")

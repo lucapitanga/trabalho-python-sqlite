@@ -20,7 +20,7 @@ class DatabaseManager:
             self.conn.row_factory = sqlite3.Row  # Para acessar colunas por nome
             return self.conn
         except sqlite3.Error as e:
-            print(f"❌ Erro ao conectar ao banco: {e}")
+            print(f" Erro ao conectar ao banco: {e}")
             return None
     
     def desconectar(self):
@@ -47,7 +47,7 @@ class DatabaseManager:
                 
                 return resultado
             except sqlite3.Error as e:
-                print(f"❌ Erro ao executar query: {e}")
+                print(f" Erro ao executar query: {e}")
                 return None
             finally:
                 self.desconectar()
@@ -99,10 +99,10 @@ class DatabaseManager:
         self.executar_query(query_clientes)
         self.executar_query(query_fornecedores)
         
-        print("✅ Tabelas criadas/verificadas com sucesso!")
+        print(" Tabelas criadas/verificadas com sucesso!")
     
     def limpar_banco(self):
         """Remove o arquivo do banco de dados (use com cuidado!)"""
         if os.path.exists(self.db_name):
             os.remove(self.db_name)
-            print("🗑️ Banco de dados removido!")
+            print(" Banco de dados removido!")
