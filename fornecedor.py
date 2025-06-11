@@ -4,8 +4,6 @@
 CRUD para Fornecedores
 """
 
-import re
-
 class Fornecedor:
     def __init__(self, id=None, nome="", cnpj="", email="", telefone="", endereco="", categoria=""):
         self.id = id
@@ -30,6 +28,16 @@ class FornecedorCRUD:
                 return False
         return True
     
+    def so_numeros(self, cnpj):
+        saida = ''
+        if cnpj.isnumeric():
+            return cnpj
+
+        for char in cnpj:
+            if char.isnumeric():
+                saida += char
+        return saida
+
     def validar_cnpj(self, cnpj):
         """Validação básica de CNPJ (apenas formato)"""
         tamanho = 14
@@ -40,10 +48,7 @@ class FornecedorCRUD:
                 saida = cnpj
 
         else:
-            check = ''
-            for char in cnpj:
-                if char.isnumeric():
-                    check += char
+            check = self.so_numeros(cnpj)
             if len(check) == tamanho:
                 saida = check
 
@@ -52,7 +57,7 @@ class FornecedorCRUD:
     
     def formatar_cnpj(self, cnpj):
         """Formata CNPJ"""
-        cnpj = re.sub(r'[^0-9]', '', cnpj)
+        cnpj = self.so_numeros(cnpj)
         if len(cnpj) == 14:
             return f"{cnpj[:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:]}"
         return cnpj
@@ -69,11 +74,13 @@ class FornecedorCRUD:
                 return
             
             cnpj = input("CNPJ (apenas números): ").strip()
-            if not self.validar_cnpj(cnpj):
+            check_cnpj = self.validar_cnpj(cnpj)
+
+            if not check_cnpj:
                 print(" CNPJ inválido. Deve ter 14 dígitos.")
                 return
             
-            cnpj = re.sub(r'[^0-9]', '', cnpj)  # Limpa CNPJ
+            cnpj = check_cnpj  # Limpa CNPJ #REMOVER
             
             email = input("Email (opcional): ").strip().lower()
             if email and not self.validar_email(email):
@@ -136,7 +143,7 @@ class FornecedorCRUD:
             return
         
         # Remove formatação do CNPJ se for o caso
-        termo_cnpj = re.sub(r'[^0-9]', '', termo)
+        termo_cnpj = self.so_numeros(termo)
         
         query = """
         SELECT * FROM fornecedores 
@@ -199,7 +206,7 @@ class FornecedorCRUD:
                 elif escolha == '2':
                     novo_cnpj = input("Novo CNPJ (apenas números): ").strip()
                     if self.validar_cnpj(novo_cnpj):
-                        novo_cnpj = re.sub(r'[^0-9]', '', novo_cnpj)
+                        novo_cnpj = self.so_numeros(novo_cnpj)
                         query = "UPDATE fornecedores SET cnpj = ? WHERE id = ?"
                         resultado = self.db.executar_query(query, (novo_cnpj, fornecedor_id))
                         if resultado:
