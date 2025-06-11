@@ -22,10 +22,12 @@ class ClienteCRUD:
         self.db = db_manager
     
     def validar_email(self, email):
-        """Valida formato do email"""
-        padrao = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-        return re.match(padrao, email) is not None
-    
+        requisitos = ['@', '.']
+        for req in requisitos:
+            if req not in email:
+                return False
+        return True
+
     def adicionar_cliente(self):
         """Adiciona um novo cliente"""
         try:

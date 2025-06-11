@@ -24,11 +24,11 @@ class FornecedorCRUD:
         self.db = db_manager
     
     def validar_email(self, email):
-        """Valida formato do email"""
-        if not email:
-            return True  # Email é opcional
-        padrao = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-        return re.match(padrao, email) is not None
+        requisitos = ['@', '.']
+        for req in requisitos:
+            if req not in email:
+                return False
+        return True
     
     def validar_cnpj(self, cnpj):
         """Validação básica de CNPJ (apenas formato)"""
