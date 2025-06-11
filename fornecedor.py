@@ -46,24 +46,24 @@ class FornecedorCRUD:
     def adicionar_fornecedor(self):
         """Adiciona um novo fornecedor"""
         try:
-            print("\n📝 Cadastrar Novo Fornecedor")
+            print("\n Cadastrar Novo Fornecedor")
             print("-" * 35)
             
             nome = input("Nome da empresa: ").strip()
             if not nome:
-                print("❌ Nome não pode estar vazio.")
+                print(" Nome não pode estar vazio.")
                 return
             
             cnpj = input("CNPJ (apenas números): ").strip()
             if not self.validar_cnpj(cnpj):
-                print("❌ CNPJ inválido. Deve ter 14 dígitos.")
+                print(" CNPJ inválido. Deve ter 14 dígitos.")
                 return
             
             cnpj = re.sub(r'[^0-9]', '', cnpj)  # Limpa CNPJ
             
             email = input("Email (opcional): ").strip().lower()
             if email and not self.validar_email(email):
-                print("❌ Email inválido.")
+                print(" Email inválido.")
                 return
             
             telefone = input("Telefone: ").strip()
@@ -77,12 +77,12 @@ class FornecedorCRUD:
             resultado = self.db.executar_query(query, (nome, cnpj, email, telefone, endereco, categoria))
             
             if resultado:
-                print("✅ Fornecedor adicionado com sucesso!")
+                print(" Fornecedor adicionado com sucesso!")
             else:
-                print("❌ Erro ao adicionar fornecedor. CNPJ pode já estar cadastrado.")
+                print(" Erro ao adicionar fornecedor. CNPJ pode já estar cadastrado.")
                 
         except Exception as e:
-            print(f"❌ Erro inesperado: {e}")
+            print(f" Erro inesperado: {e}")
     
     def listar_fornecedores(self):
         """Lista todos os fornecedores"""
@@ -90,10 +90,10 @@ class FornecedorCRUD:
         fornecedores = self.db.executar_query(query)
         
         if not fornecedores:
-            print("📭 Nenhum fornecedor cadastrado.")
+            print(" Nenhum fornecedor cadastrado.")
             return False
         
-        print("\n🏭 Lista de Fornecedores:")
+        print("\n Lista de Fornecedores:")
         print("-" * 90)
         print(f"{'ID':<3} {'Nome':<25} {'CNPJ':<18} {'Categoria':<20} {'Telefone':<15}")
         print("-" * 90)
@@ -118,7 +118,7 @@ class FornecedorCRUD:
         """Busca fornecedores por nome, CNPJ ou categoria"""
         termo = input("Digite nome, CNPJ ou categoria para buscar: ").strip()
         if not termo:
-            print("❌ Termo de busca não pode estar vazio.")
+            print(" Termo de busca não pode estar vazio.")
             return
         
         # Remove formatação do CNPJ se for o caso
@@ -132,10 +132,10 @@ class FornecedorCRUD:
         fornecedores = self.db.executar_query(query, (f"%{termo}%", f"%{termo_cnpj}%", f"%{termo}%"))
         
         if not fornecedores:
-            print("📭 Nenhum fornecedor encontrado.")
+            print(" Nenhum fornecedor encontrado.")
             return
         
-        print(f"\n🔍 Resultados da busca por '{termo}':")
+        print(f"\n Resultados da busca por '{termo}':")
         print("-" * 90)
         print(f"{'ID':<3} {'Nome':<25} {'CNPJ':<18} {'Categoria':<20} {'Telefone':<15}")
         print("-" * 90)
@@ -155,7 +155,7 @@ class FornecedorCRUD:
             fornecedor = self.buscar_fornecedor_por_id(fornecedor_id)
             
             if not fornecedor:
-                print("❌ Fornecedor não encontrado.")
+                print(" Fornecedor não encontrado.")
                 return
             
             while True:
@@ -178,9 +178,9 @@ class FornecedorCRUD:
                         self.db.executar_query(query, (novo_nome, fornecedor_id))
                         fornecedor = dict(fornecedor)
                         fornecedor['nome'] = novo_nome
-                        print("✅ Nome atualizado!")
+                        print(" Nome atualizado!")
                     else:
-                        print("❌ Nome não pode estar vazio.")
+                        print(" Nome não pode estar vazio.")
                 
                 elif escolha == '2':
                     novo_cnpj = input("Novo CNPJ (apenas números): ").strip()
@@ -191,11 +191,11 @@ class FornecedorCRUD:
                         if resultado:
                             fornecedor = dict(fornecedor)
                             fornecedor['cnpj'] = novo_cnpj
-                            print("✅ CNPJ atualizado!")
+                            print(" CNPJ atualizado!")
                         else:
-                            print("❌ CNPJ já está em uso.")
+                            print(" CNPJ já está em uso.")
                     else:
-                        print("❌ CNPJ inválido.")
+                        print(" CNPJ inválido.")
                 
                 elif escolha == '3':
                     novo_email = input("Novo email: ").strip().lower()
@@ -204,9 +204,9 @@ class FornecedorCRUD:
                         self.db.executar_query(query, (novo_email, fornecedor_id))
                         fornecedor = dict(fornecedor)
                         fornecedor['email'] = novo_email
-                        print("✅ Email atualizado!")
+                        print(" Email atualizado!")
                     else:
-                        print("❌ Email inválido.")
+                        print(" Email inválido.")
                 
                 elif escolha == '4':
                     novo_telefone = input("Novo telefone: ").strip()
@@ -214,7 +214,7 @@ class FornecedorCRUD:
                     self.db.executar_query(query, (novo_telefone, fornecedor_id))
                     fornecedor = dict(fornecedor)
                     fornecedor['telefone'] = novo_telefone
-                    print("✅ Telefone atualizado!")
+                    print(" Telefone atualizado!")
                 
                 elif escolha == '5':
                     novo_endereco = input("Novo endereço: ").strip()
@@ -222,7 +222,7 @@ class FornecedorCRUD:
                     self.db.executar_query(query, (novo_endereco, fornecedor_id))
                     fornecedor = dict(fornecedor)
                     fornecedor['endereco'] = novo_endereco
-                    print("✅ Endereço atualizado!")
+                    print(" Endereço atualizado!")
                 
                 elif escolha == '6':
                     nova_categoria = input("Nova categoria: ").strip()
@@ -230,17 +230,17 @@ class FornecedorCRUD:
                     self.db.executar_query(query, (nova_categoria, fornecedor_id))
                     fornecedor = dict(fornecedor)
                     fornecedor['categoria'] = nova_categoria
-                    print("✅ Categoria atualizada!")
+                    print(" Categoria atualizada!")
                 
                 elif escolha == '7':
                     break
                 else:
-                    print("❌ Opção inválida.")
+                    print(" Opção inválida.")
                     
         except ValueError:
-            print("❌ ID inválido.")
+            print(" ID inválido.")
         except Exception as e:
-            print(f"❌ Erro inesperado: {e}")
+            print(f" Erro inesperado: {e}")
     
     def excluir_fornecedor(self):
         """Exclui um fornecedor"""
@@ -252,7 +252,7 @@ class FornecedorCRUD:
             fornecedor = self.buscar_fornecedor_por_id(fornecedor_id)
             
             if not fornecedor:
-                print("❌ Fornecedor não encontrado.")
+                print(" Fornecedor não encontrado.")
                 return
             
             confirmacao = input(f"Confirma exclusão de '{fornecedor['nome']}'? (s/N): ").lower()
@@ -262,22 +262,22 @@ class FornecedorCRUD:
                 resultado = self.db.executar_query(query, (fornecedor_id,))
                 
                 if resultado:
-                    print(f"🗑️ Fornecedor '{fornecedor['nome']}' excluído com sucesso!")
+                    print(f" Fornecedor '{fornecedor['nome']}' excluído com sucesso!")
                 else:
-                    print("❌ Erro ao excluir fornecedor.")
+                    print(" Erro ao excluir fornecedor.")
             else:
-                print("❌ Exclusão cancelada.")
+                print(" Exclusão cancelada.")
                 
         except ValueError:
-            print("❌ ID inválido.")
+            print(" ID inválido.")
         except Exception as e:
-            print(f"❌ Erro inesperado: {e}")
+            print(f" Erro inesperado: {e}")
     
     def menu(self):
         """Menu principal de fornecedores"""
         while True:
             print("\n" + "="*40)
-            print("🏭 GERENCIAMENTO DE FORNECEDORES")
+            print(" GERENCIAMENTO DE FORNECEDORES")
             print("="*40)
             print("1. Adicionar fornecedor")
             print("2. Listar fornecedores")
@@ -302,4 +302,4 @@ class FornecedorCRUD:
             elif opcao == '6':
                 break
             else:
-                print("❌ Opção inválida. Tente novamente.")
+                print(" Opção inválida. Tente novamente.")

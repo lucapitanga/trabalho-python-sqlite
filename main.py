@@ -23,12 +23,12 @@ def menu_principal():
     
     while True:
         print("\n" + "="*50)
-        print("🏪 SISTEMA DE GERENCIAMENTO COMERCIAL")
+        print(" SISTEMA DE GERENCIAMENTO COMERCIAL")
         print("="*50)
-        print("1. 👕 Gerenciar Loja de Roupas")
-        print("2. 👤 Gerenciar Clientes")
-        print("3. 🏭 Gerenciar Fornecedores")
-        print("4. 🚪 Sair")
+        print("1.  Gerenciar Loja de Roupas")
+        print("2.  Gerenciar Clientes")
+        print("3.  Gerenciar Fornecedores")
+        print("4.  Sair")
         print("="*50)
         
         opcao = input("Escolha uma opção: ").strip()
@@ -40,15 +40,15 @@ def menu_principal():
         elif opcao == '3':
             fornecedor.menu()
         elif opcao == '4':
-            print("👋 Encerrando o sistema...")
+            print(" Encerrando o sistema...")
             break
         else:
-            print("❌ Opção inválida. Tente novamente.")
+            print(" Opção inválida. Tente novamente.")
 
 if __name__ == "__main__":
     try:
         menu_principal()
     except KeyboardInterrupt:
-        print("\n\n👋 Sistema encerrado pelo usuário.")
+        print("\n\n Sistema encerrado pelo usuário.")
     except Exception as e:
-        print(f"❌ Erro inesperado: {e}")
+        print(f" Erro inesperado: {e}")

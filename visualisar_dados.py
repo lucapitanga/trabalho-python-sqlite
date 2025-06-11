@@ -14,7 +14,7 @@ def conectar_banco(db_name="sistema_comercial.db"):
         conn.row_factory = sqlite3.Row
         return conn
     except sqlite3.Error as e:
-        print(f"❌ Erro ao conectar: {e}")
+        print(f" Erro ao conectar: {e}")
         return None
 
 def visualizar_tabela(nome_tabela):
@@ -31,14 +31,14 @@ def visualizar_tabela(nome_tabela):
         dados = cursor.fetchall()
         
         if not dados:
-            print(f"📭 Tabela '{nome_tabela}' está vazia.")
+            print(f" Tabela '{nome_tabela}' está vazia.")
             return
         
         # Buscar nomes das colunas
         cursor.execute(f"PRAGMA table_info({nome_tabela})")
         colunas = [col[1] for col in cursor.fetchall()]
         
-        print(f"\n📊 TABELA: {nome_tabela.upper()}")
+        print(f"\n TABELA: {nome_tabela.upper()}")
         print("=" * 80)
         
         # Cabeçalho
@@ -57,10 +57,10 @@ def visualizar_tabela(nome_tabela):
                     valores.append(str_valor.ljust(15))
             print(" | ".join(valores))
         
-        print(f"\n📈 Total de registros: {len(dados)}")
+        print(f"\n Total de registros: {len(dados)}")
         
     except sqlite3.Error as e:
-        print(f"❌ Erro ao consultar tabela: {e}")
+        print(f" Erro ao consultar tabela: {e}")
     finally:
         conn.close()
 
@@ -76,7 +76,7 @@ def listar_tabelas():
         tabelas = [row[0] for row in cursor.fetchall()]
         return tabelas
     except sqlite3.Error as e:
-        print(f"❌ Erro ao listar tabelas: {e}")
+        print(f" Erro ao listar tabelas: {e}")
         return []
     finally:
         conn.close()
@@ -86,10 +86,10 @@ def estatisticas_banco():
     tabelas = listar_tabelas()
     
     if not tabelas:
-        print("📭 Banco de dados vazio ou não encontrado.")
+        print(" Banco de dados vazio ou não encontrado.")
         return
     
-    print("\n📊 ESTATÍSTICAS DO BANCO")
+    print("\n ESTATÍSTICAS DO BANCO")
     print("=" * 40)
     
     conn = conectar_banco()
@@ -100,10 +100,10 @@ def estatisticas_banco():
             for tabela in tabelas:
                 cursor.execute(f"SELECT COUNT(*) FROM {tabela}")
                 count = cursor.fetchone()[0]
-                print(f"📋 {tabela.capitalize():15}: {count:3} registros")
+                print(f" {tabela.capitalize():15}: {count:3} registros")
                 
         except sqlite3.Error as e:
-            print(f"❌ Erro: {e}")
+            print(f" Erro: {e}")
         finally:
             conn.close()
 
@@ -121,7 +121,7 @@ def exportar_para_csv(nome_tabela):
         dados = cursor.fetchall()
         
         if not dados:
-            print(f"📭 Tabela '{nome_tabela}' está vazia.")
+            print(f" Tabela '{nome_tabela}' está vazia.")
             return
         
         # Nome do arquivo
@@ -139,10 +139,10 @@ def exportar_para_csv(nome_tabela):
             for linha in dados:
                 writer.writerow(linha)
         
-        print(f"✅ Dados exportados para: {arquivo_csv}")
+        print(f" Dados exportados para: {arquivo_csv}")
         
     except Exception as e:
-        print(f"❌ Erro ao exportar: {e}")
+        print(f" Erro ao exportar: {e}")
     finally:
         conn.close()
 
@@ -150,7 +150,7 @@ def menu_visualizador():
     """Menu principal do visualizador"""
     while True:
         print("\n" + "="*50)
-        print("🔍 VISUALIZADOR DE BANCO DE DADOS")
+        print(" VISUALIZADOR DE BANCO DE DADOS")
         print("="*50)
         print("1. Ver estatísticas gerais")
         print("2. Visualizar tabela específica")
@@ -176,11 +176,11 @@ def menu_visualizador():
                     if 0 <= escolha < len(tabelas):
                         visualizar_tabela(tabelas[escolha])
                     else:
-                        print("❌ Opção inválida.")
+                        print(" Opção inválida.")
                 except ValueError:
-                    print("❌ Digite um número válido.")
+                    print(" Digite um número válido.")
             else:
-                print("📭 Nenhuma tabela encontrada.")
+                print(" Nenhuma tabela encontrada.")
                 
         elif opcao == '3':
             tabelas = listar_tabelas()
@@ -199,18 +199,18 @@ def menu_visualizador():
                     if 0 <= escolha < len(tabelas):
                         exportar_para_csv(tabelas[escolha])
                     else:
-                        print("❌ Opção inválida.")
+                        print(" Opção inválida.")
                 except ValueError:
-                    print("❌ Digite um número válido.")
+                    print(" Digite um número válido.")
             else:
-                print("📭 Nenhuma tabela encontrada.")
+                print(" Nenhuma tabela encontrada.")
                 
         elif opcao == '5':
-            print("👋 Saindo do visualizador...")
+            print(" Saindo do visualizador...")
             break
             
         else:
-            print("❌ Opção inválida.")
+            print(" Opção inválida.")
 
 if __name__ == "__main__":
     menu_visualizador()
