@@ -136,21 +136,19 @@ class FornecedorCRUD:
         return None
     
     def buscar_fornecedores(self):
-        """Busca fornecedores por nome, CNPJ ou categoria"""
-        termo = input("Digite nome, CNPJ ou categoria para buscar: ").strip()
+        """Busca fornecedores por nome ou categoria"""
+        termo = input("Digite nome ou categoria para buscar: ").strip()
         if not termo:
             print(" Termo de busca não pode estar vazio.")
             return
         
-        # Remove formatação do CNPJ se for o caso
-        termo_cnpj = self.so_numeros(termo)
         
         query = """
         SELECT * FROM fornecedores 
-        WHERE nome LIKE ? OR cnpj LIKE ? OR categoria LIKE ?
+        WHERE nome LIKE ? OR categoria LIKE ?
         ORDER BY nome
         """
-        fornecedores = self.db.executar_query(query, (f"%{termo}%", f"%{termo_cnpj}%", f"%{termo}%"))
+        fornecedores = self.db.executar_query(query, (f"%{termo}%", f"%{termo}%"))
         
         if not fornecedores:
             print(" Nenhum fornecedor encontrado.")
