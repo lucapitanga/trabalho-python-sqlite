@@ -32,9 +32,23 @@ class FornecedorCRUD:
     
     def validar_cnpj(self, cnpj):
         """Validação básica de CNPJ (apenas formato)"""
-        # Remove caracteres não numéricos
-        cnpj = re.sub(r'[^0-9]', '', cnpj)
-        return len(cnpj) == 14
+        tamanho = 14
+        saida = ''
+
+        if cnpj.isnumeric():
+            if len(cnpj) == tamanho:
+                saida = cnpj
+
+        else:
+            check = ''
+            for char in cnpj:
+                if char.isnumeric():
+                    check += char
+            if len(check) == tamanho:
+                saida = check
+
+        return saida
+
     
     def formatar_cnpj(self, cnpj):
         """Formata CNPJ"""
