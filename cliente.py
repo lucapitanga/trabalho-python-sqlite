@@ -223,6 +223,23 @@ class ClienteCRUD:
         except Exception as e:
             print(f" Erro inesperado: {e}")
     
+    def excluir_todos(self):
+        """Exclui todos os clientes"""
+        try:
+            confirmacao = input("Tem certeza que deseja excluir TODOS os clientes? (s/N): ").lower()
+            if confirmacao == 's':
+                query = "DELETE FROM clientes"
+                resultado = self.db.executar_query(query)
+                if resultado:
+                    print("Todos os clientes foram excluídos com sucesso!")
+                else:
+                    print("Erro ao excluir clientes.")
+            else:
+                print("Exclusão cancelada.")
+        except Exception as e:
+            print(f"Erro inesperado: {e}")
+
+    
     def menu(self):
         """Menu principal de clientes"""
         while True:
@@ -234,7 +251,8 @@ class ClienteCRUD:
             print("3. Buscar clientes")
             print("4. Atualizar cliente")
             print("5. Excluir cliente")
-            print("6. Voltar ao menu principal")
+            print("6. Excluir TODOS os clientes")
+            print("7. Voltar ao menu principal")
             print("="*40)
             
             opcao = input("Escolha uma opção: ").strip()
@@ -250,6 +268,9 @@ class ClienteCRUD:
             elif opcao == '5':
                 self.excluir_cliente()
             elif opcao == '6':
+                self.excluir_todos()
+            elif opcao == '7':
                 break
             else:
                 print(" Opção inválida. Tente novamente.")
+

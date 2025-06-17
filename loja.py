@@ -234,6 +234,27 @@ class LojaCRUD:
         except Exception as e:
             print(f" Erro inesperado: {e}")
     
+    def excluir_todos(self):
+        """Exclui todos os produtos do banco de dados"""
+        try:
+            confirmacao = input("Tem certeza que deseja excluir TODOS os produtos? (s/N): ").strip().lower()
+            if confirmacao != 's':
+                print(" Operação cancelada.")
+                return
+
+            query = "DELETE FROM produtos"
+            resultado = self.db.executar_query(query)
+
+            if resultado is not None:
+                print(" Todos os produtos foram excluídos com sucesso!")
+            else:
+                print(" Nenhum produto foi excluído (ou tabela já está vazia).")
+        
+        except Exception as e:
+            print(f" Erro inesperado ao excluir todos os produtos: {e}")
+
+
+    
     def menu(self):
         """Menu principal da loja"""
         while True:
@@ -245,7 +266,8 @@ class LojaCRUD:
             print("3. Buscar produtos")
             print("4. Atualizar produto")
             print("5. Excluir produto")
-            print("6. Voltar ao menu principal")
+            print("6. Excluir TODOS os produtos")
+            print("7. Voltar ao menu principal")
             print("="*40)
             
             opcao = input("Escolha uma opção: ").strip()
@@ -261,6 +283,9 @@ class LojaCRUD:
             elif opcao == '5':
                 self.excluir_produto()
             elif opcao == '6':
+                self.excluir_todos()
+            elif opcao == '7':
                 break
             else:
                 print(" Opção inválida. Tente novamente.")
+

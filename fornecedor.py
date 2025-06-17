@@ -292,6 +292,23 @@ class FornecedorCRUD:
         except Exception as e:
             print(f" Erro inesperado: {e}")
     
+    def excluir_todos(self):
+        """Exclui todos os fornecedores"""
+        try:
+            confirmacao = input("Tem certeza que deseja excluir TODOS os fornecedores? (s/N): ").lower()
+            if confirmacao == 's':
+                query = "DELETE FROM fornecedores"
+                resultado = self.db.executar_query(query)
+                if resultado is not None:
+                    print("Todos os fornecedores foram excluídos com sucesso!")
+                else:
+                    print("Erro ao excluir fornecedores.")
+            else:
+                print("Exclusão cancelada.")
+        except Exception as e:
+            print(f"Erro inesperado: {e}")
+
+    
     def menu(self):
         """Menu principal de fornecedores"""
         while True:
@@ -303,7 +320,8 @@ class FornecedorCRUD:
             print("3. Buscar fornecedores")
             print("4. Atualizar fornecedor")
             print("5. Excluir fornecedor")
-            print("6. Voltar ao menu principal")
+            print("6. Excluir TODOS os fornecedores")
+            print("7. Voltar ao menu principal")
             print("="*40)
             
             opcao = input("Escolha uma opção: ").strip()
@@ -319,6 +337,8 @@ class FornecedorCRUD:
             elif opcao == '5':
                 self.excluir_fornecedor()
             elif opcao == '6':
+                self.excluir_todos()
+            elif opcao == '7':
                 break
             else:
                 print(" Opção inválida. Tente novamente.")
